@@ -1,0 +1,89 @@
+<!doctype html>
+<html>
+    <head>
+        
+  
+        <link href="https://fonts.googleapis.com/css?family=Playball|Poppins|Roboto|Seaweed+Script" rel="stylesheet">    
+        <link rel="stylesheet" href="assets/css/reset.css">
+        <link rel="stylesheet" href="assets/css/style.css">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/pretty-checkbox@3.0/dist/pretty-checkbox.min.css">
+            
+    </head>
+    <body>
+
+<!-- ////////////////////////////////////////HEADER/////////////////////////////////////////////// -->
+
+        <div id="Top">
+            <div id="Header">
+                API<span>YI</span>O
+            </div>
+        </div>
+
+        <div id="body">
+
+
+<!-- ////////////////////////////////////////RIGHTNAV WINDOW/////////////////////////////////////////////// -->
+
+            <div class="rightNav inputWindow">
+
+                <button class="rightNav expButton selectGiphy">GIPHY</button>
+                <button class="rightNav expButton selectMovie">MOVIE</button>
+                <button class="rightNav expButton selectBand">BAND</button>
+
+
+                <div class="rightNav userInput">
+                    <div>Enter a category </div>
+                    <input type="text" name="category" id="typedInput">
+                    <div>Rating
+                        <select id='ratingSelect'>
+                            <option value="G">G</option>
+                            <option value="Y">Y</option>
+                            <option value="PG">PG</option>
+                            <option value="PG-13">PG-13</option>
+                            <option value="R">R</option>
+                            <option value="">All</option>
+                        </select>
+                    </div>
+                    <div>Color
+                        <select id='colorSelect'>
+                            <option value="Blue">Blue</option>
+                            <option value="Yellow">Yellow</option>
+                            <option value="Green">Green</option>
+                            <option value="Orange">Orange</option>
+                            <option value="Red">Red</option>
+                            <option value="Purple">Purple</option>
+                        </select>
+                    </div>
+                    <button id="userSubmit">Add New Button</button>
+                    
+                </div>
+                <div class="rightNav buttons">
+                    <div id="catHeading">Category Buttons</div>
+                    <div class="pretty p-switch rightNav" id="persistDiv">
+                        <input type="checkbox" class="persist" id="persistCheck" >
+                        <div class="state p-danger rightNave persistLabel">
+                            <label>Persist Giphys</label>
+                        </div>
+                    </div>
+                    <!-- <label for="persistCheck" class="rightNav persistLabel">Persist Gifs</label><input type="checkbox"class="rightNav persist" id="persistCheck"><br> -->
+                    <div class="rightNav buttonContainer"></div>
+                </div>
+            </div>
+
+
+<!-- ////////////////////////////////////////MAIN WINDOW/////////////////////////////////////////////// -->
+            <div class="mainBody gifWindow">
+
+            </div>
+
+
+
+
+        </div>
+        
+        
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/jquery/3.2.1/jquery.min.js"></script>
+        <script src="assets/javascript/app.js"></script>
+    </body>
+</html>
