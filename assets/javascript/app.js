@@ -123,6 +123,7 @@ $(document).on('click','.giphyButton',function(){
 $(document).on('click','.movieButton',function(){
     button = $(this);
     apiUrl = url1+button.attr('data-value')+url2+button.attr('data-year');
+    
     if ($('#persistCheck').is(':checked')){
         
     }else{
@@ -135,19 +136,24 @@ $(document).on('click','.movieButton',function(){
         console.log(apiUrl);
         console.log(apiResp);
 
-        newMovieDiv = $('<div>').attr('class','movieDiv');
-        newMovieTitle = $('<p>').text(apiResp.Title).attr('class','movieTitle');
-        newMoviePoster = $('<img>').attr('src',apiResp.Poster).attr('class','moviePoster');
-        newMoviePlot = ($('<p>').text(apiResp.Plot).attr('class','moviePlot')).append('<br>','<br>');
-        newMovieRating = ($('<p>').html('<u>Rated:</u> '+apiResp.Rated).attr('class','movieRated')).append('<br>','<br>');
-        newMovieRuntime = ($('<p>').html('<u>Runtime:</u> '+apiResp.Runtime).attr('class','movieRuntime')).append('<br>','<br>');
-        newMovieGenre = ($('<p>').html('<u>Genre:</u> '+apiResp.Genre).attr('class','movieGenre')).append('<br>','<br>');
-        newMovieActors = ($('<p>').html('<u>Actors:</u> '+apiResp.Actors).attr('class','movieActors')).append('<br>','<br>');
-        newMovieDirector = ($('<p>').html('<u>Director:</u> '+apiResp.Director).attr('class','movieDirector')).append('<br>','<br>');
+        if(apiResp.Response == 'True'){
+            newMovieDiv = $('<div>').attr('class','movieDiv');
+            newMovieTitle = $('<p>').text(apiResp.Title).attr('class','movieTitle');
+            newMoviePoster = $('<img>').attr('src',apiResp.Poster).attr('class','moviePoster');
+            newMoviePlot = ($('<p>').text(apiResp.Plot).attr('class','moviePlot')).append('<br>','<br>');
+            newMovieRating = ($('<p>').html('<u>Rated:</u> '+apiResp.Rated).attr('class','movieRated')).append('<br>','<br>');
+            newMovieRuntime = ($('<p>').html('<u>Runtime:</u> '+apiResp.Runtime).attr('class','movieRuntime')).append('<br>','<br>');
+            newMovieGenre = ($('<p>').html('<u>Genre:</u> '+apiResp.Genre).attr('class','movieGenre')).append('<br>','<br>');
+            newMovieActors = ($('<p>').html('<u>Actors:</u> '+apiResp.Actors).attr('class','movieActors')).append('<br>','<br>');
+            newMovieDirector = ($('<p>').html('<u>Director:</u> '+apiResp.Director).attr('class','movieDirector')).append('<br>','<br>');
 
-        newMovieDiv.append(newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieDirector,newMovieActors);
-        // newMovie = $
-        $('.gifWindow').append(newMovieDiv);
+            newMovieDiv.append(newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieDirector,newMovieActors);
+            // newMovie = $
+            $('.gifWindow').append(newMovieDiv);
+
+        }
+
+        
 
     })
 })
