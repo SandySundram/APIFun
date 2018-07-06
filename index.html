@@ -16,7 +16,7 @@
 
         <div id="Top">
             <div id="Header">
-                API<span>YI</span>O
+                API<span id="headerSpan">YI</span>O
             </div>
         </div>
 
@@ -29,13 +29,13 @@
 
                 <button class="rightNav expButton selectGiphy">GIPHY</button>
                 <button class="rightNav expButton selectMovie">MOVIE</button>
-                <button class="rightNav expButton selectBand">BAND</button>
+                <!-- <button class="rightNav expButton selectBand">BAND</button> -->
 
 
                 <div class="rightNav userInput">
-                    <div>Enter a category </div>
+                    <div>Enter a <span id="catSpan">Category</span> </div>
                     <input type="text" name="category" id="typedInput">
-                    <div>Rating
+                    <div><span id="dropdownSpan">Rating</span>
                         <select id='ratingSelect'>
                             <option value="G">G</option>
                             <option value="Y">Y</option>
@@ -44,6 +44,7 @@
                             <option value="R">R</option>
                             <option value="">All</option>
                         </select>
+                        <input type="text" class="inputYear" id="inputYear">
                     </div>
                     <div>Color
                         <select id='colorSelect'>
@@ -59,11 +60,11 @@
                     
                 </div>
                 <div class="rightNav buttons">
-                    <div id="catHeading">Category Buttons</div>
+                    <div id="catHeading"><span id="buttonSpan">Category</span> Buttons</div>
                     <div class="pretty p-switch rightNav" id="persistDiv">
                         <input type="checkbox" class="persist" id="persistCheck" >
                         <div class="state p-danger rightNave persistLabel">
-                            <label>Persist Giphys</label>
+                            <label>Preserve <span id="persistSpan">Giphys</span></label>
                         </div>
                     </div>
                     <!-- <label for="persistCheck" class="rightNav persistLabel">Persist Gifs</label><input type="checkbox"class="rightNav persist" id="persistCheck"><br> -->

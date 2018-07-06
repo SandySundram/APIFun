@@ -6,7 +6,8 @@ html,body,#body{
 #Top{
     height: 55px;
     width: 100%;
-    background-color: rgb(177, 51, 51)
+    background-color: rgb(177, 51, 51);
+    border-bottom : 1px solid black;
 }
 #Header{
     font-size: 40px;
@@ -14,7 +15,7 @@ html,body,#body{
     left: 30px;
     position: absolute;
 }
-span{
+#headerSpan{
     color: white;
 }
 .userInput,.buttons{
@@ -47,9 +48,13 @@ span{
 }
 .gifWindow{
     float:left;
-    width: 83.7%;
+    width: 82.9%;
     height: 100%;
     background-color: black;
+    padding-left: 10px;
+    overflow: auto;
+    -ms-overflow-style: none; 
+    padding-top: 10px;
 }
 .inputWindow{
     width: 16.3%;
@@ -60,8 +65,8 @@ span{
 .giphyImage{
     width: 200px;
     height: 150px;
-    margin-left: 10px;
-    margin-top: 10px;
+    margin-right: 10px;
+    /* margin-top: 10px; */
 }
 .categoryButton,#userSubmit{
     background-color: rgb(0,0,255);
@@ -77,19 +82,21 @@ span{
     margin-bottom: 3px;
     color: rgb(255, 255, 255);
     opacity: 0.8;
+    outline: none;
 }
-#colorSelect,#ratingSelect,#typedInput{
+#colorSelect,#ratingSelect,#typedInput,#inputYear{
     margin-top: 10px;
 }
 #userSubmit{
     background-color: rgba(0, 0, 0, 0.8);
     margin-top: 10px;
+    outline: none;
 }
 #persistDiv{
     margin-bottom: 20px;
 }
 .expButton{
-    width: 31.9%;
+    width: 48.95%;
     height: 30px;
     background-color: rgba(128, 128, 128, 0.8);
     border: none;
@@ -97,4 +104,46 @@ span{
     display: inline-block;
     cursor: pointer;
     text-decoration: none;
+    outline: none; /*Remove annoying blue outline when button is clicked */
 }
+.hide{
+    display: none;
+}
+.inputYear{
+    width: 50px;
+}
+p.movieTitle{
+    color: white;
+    font-weight: 600;
+    font-size: 30px;
+    margin-top: 10px;
+    margin-bottom: 10px;
+    text-decoration: underline;
+
+}
+.moviePlot,.movieRated,.movieRuntime,.movieGenre,.movieActors,.movieDirector{
+    color: white;
+    font-weight: 400;
+    width: 600px;
+    float: left;
+    margin-left: 15px;
+}
+.movieDiv{
+    height: 500px;
+    padding-left: 10px;
+    width: 97.5%;
+    border: solid 2px rgb(177, 51, 51);
+    /* margin-top: 10px; */
+    margin-bottom: 10px;
+}
+.moviePoster{
+    float: left;
+    width: 300px;
+    height: 440px;
+}
+::-webkit-scrollbar {
+    width: 0px;  /* remove scrollbar space */
+    background: transparent;  /* optional: just make scrollbar invisible */
+}
+
+
