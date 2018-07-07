@@ -21,6 +21,7 @@ var giphyTab;
 var movieTab;
 var url1 = ""; 
 var url2 = "";
+var newMovieDiv,newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieActors,newMovieDirector;
 ////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////
 
 //load buttons from the preloaded array
@@ -64,7 +65,7 @@ $(".selectGiphy").on('click',function(){
     $('#catSpan').text('category');
     $('#typedInput').val("");
     $('#buttonSpan').text('Category');
-    $('#persistSpan').text('Giphys');
+    $('#persistSpan').text('Gifs');
     $("#dropdownSpan").text('Rating');
     $("#inputYear").addClass('hide');
     $("#ratingSelect").removeClass('hide');
