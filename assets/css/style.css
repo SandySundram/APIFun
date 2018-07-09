@@ -96,6 +96,12 @@ html,body,#body{
 .fa-star{
     color: goldenrod;
     margin-left: 148px;
+    cursor: pointer;
+}
+.fa-trash-alt{
+    color: blue;
+    cursor: pointer;
+    margin-left: 148px;
 }
 .buttonContainer{
     padding-bottom: 15px;

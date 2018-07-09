@@ -35,8 +35,12 @@ var giphyTab;
 var movieTab;
 var url1 = ""; 
 var url2 = "";
+var favorites = [];
+var newFavorite = [];
+var saveRetrieveData = [];
 var stillImage, mp4Image, gifTitle;
 var newMovieDiv,newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieActors,newMovieDirector;
+
 ////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////
 
 //load buttons from the preloaded array
@@ -69,7 +73,8 @@ $(document).ready(function(){
     $(".selectGiphy").trigger("click");
 });
 
-//When giphy tab is clicked initialize app with giphy api
+//When giphy tab is clicked initialize app with giphy api and update elements and content accordingly
+//Also load the favorite giphys from the local storage
 $(".selectGiphy").on('click',function(){
     giphyTab = 1;
     movieTab = 0;
@@ -88,6 +93,28 @@ $(".selectGiphy").on('click',function(){
     $(".gifWindow").empty();
     url1 = 'https://api.giphy.com/v1/gifs/random?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm&tag=';
     url2 = '&rating=';
+
+    saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
+    console.log(saveRetrieveData);
+    for (i in saveRetrieveData){
+        console.log(saveRetrieveData, i);
+        apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
+        $.ajax({
+            url: apiURLbyID
+        }).then(function(apiResp){
+            // console.log(apiResp.data.images.fixed_width_still.url);
+            stillImage = apiResp.data.images.fixed_width_still.url;
+            mp4Image = apiResp.data.images.fixed_width.url;
+            gifTitle = apiResp.data.slug;
+            gifID = apiResp.data.id;
+            newGiphyDiv = $('<div>').attr('class','giphyDiv');
+            newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
+            newGiphyDiv.append(newGiphy);
+            newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
+            newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
+            $('.gifWindow').prepend(newGiphyDiv);
+        })
+    }
 })
 
 //When movie tab is clicked initialize app with movie api
@@ -117,12 +144,37 @@ $(".selectMovie").on('click',function(){
 //call giphy api and loads specific giphys
 $(document).on('click','.giphyButton',function(){
     button = $(this);
+    saveRetrieveData = [];
     apiUrl = url1+button.attr('data-value')+url2+button.attr('data-rating');
     if ($('#persistCheck').is(':checked')){
         
     }else{
         $('.gifWindow').empty();
     }
+
+    saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
+    if(saveRetrieveData !== null){
+        for (i in saveRetrieveData){
+            apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
+            $.ajax({
+                url: apiURLbyID
+            }).then(function(apiResp){
+                // console.log(apiResp.data.images.fixed_width_still.url);
+                stillImage = apiResp.data.images.fixed_width_still.url;
+                mp4Image = apiResp.data.images.fixed_width.url;
+                gifTitle = apiResp.data.slug;
+                gifID = apiResp.data.id;
+                newGiphyDiv = $('<div>').attr('class','giphyDiv');
+                newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
+                newGiphyDiv.append(newGiphy);
+                newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
+                newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
+                $('.gifWindow').prepend(newGiphyDiv);
+            })
+        }
+    }
+
+
     for (var i=0;i<10;i++){
                
         $.ajax({
@@ -138,7 +190,7 @@ $(document).on('click','.giphyButton',function(){
             newGiphyDiv.append(newGiphy);
             newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
             newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-star'));
-            $('.gifWindow').prepend(newGiphyDiv);
+            $('.gifWindow').append(newGiphyDiv);
         })
     }   
 })
@@ -180,7 +232,7 @@ $(document).on('click','.movieButton',function(){
 })
 
 
-//Download still image gif with filename same as giphy title name
+//Download still image gif with the saved filename the same as giphy title name
 $(document).on('click','.downloadButton', function() {
     let url = $(this).attr('data-href');
     let query = `https://query.yahooapis.com/v1/public/yql?q=select * from data.uri where url="${url}"&format=json&callback=`;
@@ -198,7 +250,7 @@ $(document).on('click','.downloadButton', function() {
 })
 
 
-//Start and stop giphy when click
+//Start and stop giphy when clicked
 $(document).on('click','.giphyImage',function(){
     image = $(this);
     if(image.attr('data-state') === 'still'){
@@ -221,3 +273,19 @@ $(document).on('mouseleave','.downloadButton',function(){
     $('.fa-star').css('margin-left','148px')
 })
 
+//Save giphy to favorites array and savedGiphys local storage, when star/favorite button it clicked
+$(document).on('click','.favoriteButton', function(){
+    $(this).addClass('fa-trash-alt').removeClass('fa-star');
+    newFavorite = $(this).attr('data-id');
+    // favorites = JSON.parse(localStorage.getItem('savedGiphys'));
+    if(JSON.parse(localStorage.getItem('savedGiphys')) !== null){
+        favorites = JSON.parse(localStorage.getItem('savedGiphys'));
+        favorites.push(newFavorite);
+    }
+    else{
+        favorites[0] = newFavorite;
+    }
+    
+    localStorage.setItem('savedGiphys',JSON.stringify(favorites));
+
+})
