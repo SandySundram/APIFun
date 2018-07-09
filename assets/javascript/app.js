@@ -4,6 +4,20 @@
 //OMDBI API Key - 7bcccd86
 //OMDBI url - http://www.omdbapi.com/?i=tt3896198&apikey=7bcccd86&t=Interstellar&plot=short&y=2014
 
+
+
+// var array = [['a',1],['b',2],['c',3],['d',4],['e',5],['f',6]];
+
+// 	var pulledData;
+
+// 	localStorage.setItem('items',JSON.stringify(array));
+// 	pulleddata = JSON.parse(localStorage.getItem('items'));
+// 	console.log(pulleddata);
+
+
+
+
+
 //////////////////////////////////////////CATEGORY ARRAY/////////////////////////////////////////////////
 var topics = ['dogs','cats','elephants','puppies','kittens','monkeys','turtle'];
 var movies = [['Interstellar','2014'],['Snatch','2000'],['Avatar','2009'],['Dunkirk','2017'],['Aliens','1986'],['The Shawshank Redemption','1994']];
@@ -21,6 +35,7 @@ var giphyTab;
 var movieTab;
 var url1 = ""; 
 var url2 = "";
+var stillImage, mp4Image, gifTitle;
 var newMovieDiv,newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieActors,newMovieDirector;
 ////////////////////////////////////////FUNCTIONS///////////////////////////////////////////////////////
 
@@ -45,7 +60,7 @@ $('#userSubmit').on('click',function(){
     }
     else if( movieTab == 1){
         $('.buttonContainer').prepend($('<button>').text(upperString).addClass('movieButton categoryButton').attr('data-value',upperString).attr('data-year',$('#inputYear').val()).css('background-color',$('#colorSelect').val()));
-        topics.push(upperString);
+        movies.push(upperString);
     }
 })
 
@@ -58,6 +73,7 @@ $(document).ready(function(){
 $(".selectGiphy").on('click',function(){
     giphyTab = 1;
     movieTab = 0;
+    $( "#persistCheck" ).prop( "checked", false );
     $(this).css('background-color','white');
     $(".selectMovie").css('background-color','rgba(128, 128, 128, 0.8)');
     $('.movieButton').addClass('hide');
@@ -78,6 +94,7 @@ $(".selectGiphy").on('click',function(){
 $(".selectMovie").on('click',function(){
     giphyTab = 0;
     movieTab = 1;
+    $( "#persistCheck" ).prop( "checked", false );
     $(this).css('background-color','white');
     $(".selectGiphy").css('background-color','rgba(128, 128, 128, 0.8)');
     $(".gifWindow").empty();
@@ -114,10 +131,16 @@ $(document).on('click','.giphyButton',function(){
             // console.log(apiResp.data.images.fixed_width_still.url);
             stillImage = apiResp.data.images.fixed_width_still.url;
             mp4Image = apiResp.data.images.fixed_width.url;
+            gifTitle = apiResp.data.title;
+            newGiphyDiv = $('<div>').attr('class','giphyDiv');
             newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
-            $('.gifWindow').append(newGiphy);
+            newGiphyDiv.append(newGiphy);
+            newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
+            // fa fa-heart fa-2x fave-heart-icon
+            // fa fa-download
+            $('.gifWindow').prepend(newGiphyDiv);
         })
-    }
+    }   
 })
 
 //call omdbi api and loads specific movie
@@ -150,18 +173,29 @@ $(document).on('click','.movieButton',function(){
 
             newMovieDiv.append(newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieDirector,newMovieActors);
             // newMovie = $
-            $('.gifWindow').append(newMovieDiv);
+            $('.gifWindow').prepend(newMovieDiv);
 
         }
-
-        
-
     })
 })
 
 
+//Download still image gif
+$(document).on('click','.downloadButton', function() {
+    let url = $(this).attr('data-href');
+    let query = `https://query.yahooapis.com/v1/public/yql?q=select * from data.uri where url="${url}"&format=json&callback=`;
+    let a = document.createElement("a");
 
-
+    a.download = `${$(this).attr('data-title')}.gif`;
+    
+    fetch(query).then(response => response.json())
+    .then(({query:{results:{url}}}) => {
+        a.href = url;
+        document.body.appendChild(a);
+        a.click();  
+    })
+    .catch(err => console.log(err));
+})
 
 
 //Start and stop giphy
