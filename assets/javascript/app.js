@@ -132,12 +132,12 @@ $(document).on('click','.giphyButton',function(){
             stillImage = apiResp.data.images.fixed_width_still.url;
             mp4Image = apiResp.data.images.fixed_width.url;
             gifTitle = apiResp.data.title;
+            gifID = apiResp.data.id;
             newGiphyDiv = $('<div>').attr('class','giphyDiv');
             newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
             newGiphyDiv.append(newGiphy);
             newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
-            // fa fa-heart fa-2x fave-heart-icon
-            // fa fa-download
+            newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-star'));
             $('.gifWindow').prepend(newGiphyDiv);
         })
     }   
@@ -180,7 +180,7 @@ $(document).on('click','.movieButton',function(){
 })
 
 
-//Download still image gif
+//Download still image gif with filename same as giphy title name
 $(document).on('click','.downloadButton', function() {
     let url = $(this).attr('data-href');
     let query = `https://query.yahooapis.com/v1/public/yql?q=select * from data.uri where url="${url}"&format=json&callback=`;
@@ -198,7 +198,7 @@ $(document).on('click','.downloadButton', function() {
 })
 
 
-//Start and stop giphy
+//Start and stop giphy when click
 $(document).on('click','.giphyImage',function(){
     image = $(this);
     if(image.attr('data-state') === 'still'){
@@ -209,5 +209,15 @@ $(document).on('click','.giphyImage',function(){
         image.attr('src',image.attr('data-stillurl'));
         image.attr('data-state','still');
     }
+})
+
+//Hover over Download button and update css accordingly on mouse enter and mouse exit
+$(document).on('mouseenter','.downloadButton',function(){
+    $(this).text('    Download');
+    $(this).next('.fa-star').css('margin-left','74.5px');
+})
+$(document).on('mouseleave','.downloadButton',function(){
+    $(this).text('');
+    $('.fa-star').css('margin-left','148px')
 })
 

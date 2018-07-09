@@ -88,10 +88,14 @@ html,body,#body{
     margin-top: 1px;
     cursor: pointer;
     padding-left: 10px;
-    padding-bottom: 3px;
+    padding-bottom: 5px;
 }
 .fa-download{
     color: lightgrey;
+}
+.fa-star{
+    color: goldenrod;
+    margin-left: 148px;
 }
 .buttonContainer{
     padding-bottom: 15px;
