@@ -129,8 +129,6 @@ $(".selectMovie").on('click',function(){
     url2 = '&plot=full&y=';
 })
 
-
-
 //call giphy api and loads specific giphys
 $(document).on('click','.giphyButton',function(){
     button = $(this);
@@ -168,8 +166,7 @@ $(document).on('click','.giphyButton',function(){
             }
             alreadyDisplayed++;
         }
-    }
-    
+    }    
 
     //On button click, load 10 Giphys at a time 
     for (var i=0;i<10;i++){
@@ -227,7 +224,6 @@ $(document).on('click','.movieButton',function(){
     })
 })
 
-
 //Download still image gif with the saved filename the same as giphy title name
 $(document).on('click','.downloadButton', function() {
     let url = $(this).attr('data-href');
@@ -244,7 +240,6 @@ $(document).on('click','.downloadButton', function() {
     })
     .catch(err => console.log(err));
 })
-
 
 //Start and stop giphy when clicked
 $(document).on('click','.giphyImage',function(){
@@ -271,9 +266,21 @@ $(document).on('mouseleave','.downloadButton',function(){
     $('.fa-trash-alt').css('margin-left','148px');
 })
 
+//Hover over Favorite button and update css accordingly on mouse enter and mouse exit
+$(document).on('mouseenter','.fa-star',function(){
+    $(this).before($('<b>').text('Add to Fav').css('color','goldenrod').css('margin-left','65px'));
+    $(this).css('margin-left','7px');
+})
+$(document).on('mouseleave','.fa-star',function(){
+    $('b').remove();
+    $(this).css('margin-left','148px')
+})
+
 //Save giphy to favorites array and savedGiphys local storage, when star/favorite button it clicked
 $(document).on('click','.fa-star', function(){
+    $('b').remove();
     $(this).addClass('fa-trash-alt').removeClass('fa-star');
+    $('.fa-trash-alt').css('margin-left','148px');
     newFavorite = $(this).attr('data-id');
     if(JSON.parse(localStorage.getItem('savedGiphys')) !== null){
         favorites = JSON.parse(localStorage.getItem('savedGiphys'));
