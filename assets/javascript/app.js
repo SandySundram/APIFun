@@ -4,20 +4,6 @@
 //OMDBI API Key - 7bcccd86
 //OMDBI url - http://www.omdbapi.com/?i=tt3896198&apikey=7bcccd86&t=Interstellar&plot=short&y=2014
 
-
-
-// var array = [['a',1],['b',2],['c',3],['d',4],['e',5],['f',6]];
-
-// 	var pulledData;
-
-// 	localStorage.setItem('items',JSON.stringify(array));
-// 	pulleddata = JSON.parse(localStorage.getItem('items'));
-// 	console.log(pulleddata);
-
-
-
-
-
 //////////////////////////////////////////CATEGORY ARRAY/////////////////////////////////////////////////
 var topics = ['dogs','cats','elephants','puppies','kittens','monkeys','turtle'];
 var movies = [['Interstellar','2014'],['Snatch','2000'],['Avatar','2009'],['Dunkirk','2017'],['Aliens','1986'],['The Shawshank Redemption','1994']];
@@ -101,7 +87,6 @@ $(".selectGiphy").on('click',function(){
         $.ajax({
             url: apiURLbyID
         }).then(function(apiResp){
-            // console.log(apiResp.data.images.fixed_width_still.url);
             stillImage = apiResp.data.images.fixed_width_still.url;
             mp4Image = apiResp.data.images.fixed_width.url;
             gifTitle = apiResp.data.slug;
@@ -178,7 +163,6 @@ $(document).on('click','.giphyButton',function(){
         $.ajax({
             url: apiUrl
         }).then(function(apiResp){
-            // console.log(apiResp.data.images.fixed_width_still.url);
             stillImage = apiResp.data.images.fixed_width_still.url;
             mp4Image = apiResp.data.images.fixed_width.url;
             gifTitle = apiResp.data.title;
@@ -222,7 +206,6 @@ $(document).on('click','.movieButton',function(){
             newMovieDirector = ($('<p>').html('<u>Director:</u> '+apiResp.Director).attr('class','movieDirector')).append('<br>','<br>');
 
             newMovieDiv.append(newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieDirector,newMovieActors);
-            // newMovie = $
             $('.gifWindow').prepend(newMovieDiv);
 
         }
