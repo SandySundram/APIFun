@@ -219,7 +219,7 @@ $(document).on('click','.movieButton',function(){
 
             newMovieDiv.append(newMovieTitle,newMoviePoster,newMoviePlot,newMovieRating,newMovieRuntime,newMovieGenre,newMovieDirector,newMovieActors);
             $('.gifWindow').prepend(newMovieDiv);
-
+            $(".gifWindow").animate({scrollTop: 0}, 700);
         }
     })
 })
