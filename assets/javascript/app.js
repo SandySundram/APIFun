@@ -119,7 +119,7 @@ $(".selectMovie").on('click',function(){
     $("#inputYear").removeClass('hide');
     $("#ratingSelect").addClass('hide');
 
-    url1 = 'http://www.omdbapi.com/?i=tt3896198&apikey=7bcccd86&t=';
+    url1 = 'https://www.omdbapi.com/?i=tt3896198&apikey=7bcccd86&t=';
     url2 = '&plot=full&y=';
 })
 
