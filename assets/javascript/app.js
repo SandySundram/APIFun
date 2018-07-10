@@ -15,6 +15,7 @@ var apiUrl;
 var button;
 var image;
 var newGiphy;
+var alreadyDisplayed = 0;
 var newMovie;
 var toPersist = 0;
 var giphyTab;
@@ -64,6 +65,7 @@ $(document).ready(function(){
 $(".selectGiphy").on('click',function(){
     giphyTab = 1;
     movieTab = 0;
+    alreadyDisplayed = 0;
     $( "#persistCheck" ).prop( "checked", false );
     $(this).css('background-color','white');
     $(".selectMovie").css('background-color','rgba(128, 128, 128, 0.8)');
@@ -82,23 +84,27 @@ $(".selectGiphy").on('click',function(){
 
     saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
     console.log(saveRetrieveData);
-    for (i in saveRetrieveData){
-        apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
-        $.ajax({
-            url: apiURLbyID
-        }).then(function(apiResp){
-            stillImage = apiResp.data.images.fixed_width_still.url;
-            mp4Image = apiResp.data.images.fixed_width.url;
-            gifTitle = apiResp.data.slug;
-            gifID = apiResp.data.id;
-            newGiphyDiv = $('<div>').attr('class','giphyDiv');
-            newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
-            newGiphyDiv.append(newGiphy);
-            newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
-            newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
-            $('.gifWindow').prepend(newGiphyDiv);
-        })
+    if(saveRetrieveData !== null){
+        for (i in saveRetrieveData){
+            apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
+            $.ajax({
+                url: apiURLbyID
+            }).then(function(apiResp){
+                stillImage = apiResp.data.images.fixed_width_still.url;
+                mp4Image = apiResp.data.images.fixed_width.url;
+                gifTitle = apiResp.data.slug;
+                gifID = apiResp.data.id;
+                newGiphyDiv = $('<div>').attr('class','giphyDiv');
+                newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
+                newGiphyDiv.append(newGiphy);
+                newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
+                newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
+                $('.gifWindow').prepend(newGiphyDiv);
+            })
+        }
+        alreadyDisplayed++;
     }
+    
 })
 
 //When movie tab is clicked initialize app with movie api
@@ -132,30 +138,38 @@ $(document).on('click','.giphyButton',function(){
     apiUrl = url1+button.attr('data-value')+url2+button.attr('data-rating');
     if ($('#persistCheck').is(':checked')){
         
-    }else{
+    }
+    else{
         $('.gifWindow').empty();
+        alreadyDisplayed = 0;
+        console.log('alreadyDisplayed: '+alreadyDisplayed);
     }
     //Load saved/favorite giphys
-    saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
-    if(saveRetrieveData !== null){
-        for (i in saveRetrieveData){
-            apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
-            $.ajax({
-                url: apiURLbyID
-            }).then(function(apiResp){
-                stillImage = apiResp.data.images.fixed_width_still.url;
-                mp4Image = apiResp.data.images.fixed_width.url;
-                gifTitle = apiResp.data.slug;
-                gifID = apiResp.data.id;
-                newGiphyDiv = $('<div>').attr('class','giphyDiv');
-                newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
-                newGiphyDiv.append(newGiphy);
-                newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
-                newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
-                $('.gifWindow').prepend(newGiphyDiv);
-            })
+    if(alreadyDisplayed == 0){
+        
+        saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
+        if(saveRetrieveData !== null){
+            for (i in saveRetrieveData){
+                apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
+                $.ajax({
+                    url: apiURLbyID
+                }).then(function(apiResp){
+                    stillImage = apiResp.data.images.fixed_width_still.url;
+                    mp4Image = apiResp.data.images.fixed_width.url;
+                    gifTitle = apiResp.data.slug;
+                    gifID = apiResp.data.id;
+                    newGiphyDiv = $('<div>').attr('class','giphyDiv');
+                    newGiphy = $('<img>').attr('src',stillImage).attr('data-stillurl',stillImage).attr('data-mp4url',mp4Image).attr('data-state','still').attr('class','giphyImage');
+                    newGiphyDiv.append(newGiphy);
+                    newGiphyDiv.append(($('<div>').attr('class','downloadButton').attr('data-href',stillImage).attr('data-title',gifTitle)).prepend('<i>').addClass('fa fa-download'));
+                    newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-trash-alt'));
+                    $('.gifWindow').prepend(newGiphyDiv);
+                })
+            }
+            alreadyDisplayed++;
         }
     }
+    
 
     //On button click, load 10 Giphys at a time 
     for (var i=0;i<10;i++){
@@ -174,7 +188,8 @@ $(document).on('click','.giphyButton',function(){
             newGiphyDiv.append(($('<div>').attr('class','favoriteButton').attr('data-id',gifID).attr('data-title',gifTitle)).prepend('<i>').addClass('fas fa-star'));
             $('.gifWindow').append(newGiphyDiv);
         })
-    }   
+    }
+    // alreadyDisplayed++;   
 })
 
 //call omdbi api and loads specific movie
