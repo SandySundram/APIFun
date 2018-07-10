@@ -97,7 +97,6 @@ $(".selectGiphy").on('click',function(){
     saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
     console.log(saveRetrieveData);
     for (i in saveRetrieveData){
-        console.log(saveRetrieveData, i);
         apiURLbyID = `https://api.giphy.com/v1/gifs/${saveRetrieveData[i]}?api_key=rwb2FLtJsi0xauS9uoQNSQVLX10XIlJm`;     
         $.ajax({
             url: apiURLbyID
@@ -151,7 +150,7 @@ $(document).on('click','.giphyButton',function(){
     }else{
         $('.gifWindow').empty();
     }
-
+    //Load saved/favorite giphys
     saveRetrieveData = JSON.parse(localStorage.getItem('savedGiphys'));
     if(saveRetrieveData !== null){
         for (i in saveRetrieveData){
@@ -159,7 +158,6 @@ $(document).on('click','.giphyButton',function(){
             $.ajax({
                 url: apiURLbyID
             }).then(function(apiResp){
-                // console.log(apiResp.data.images.fixed_width_still.url);
                 stillImage = apiResp.data.images.fixed_width_still.url;
                 mp4Image = apiResp.data.images.fixed_width.url;
                 gifTitle = apiResp.data.slug;
@@ -174,7 +172,7 @@ $(document).on('click','.giphyButton',function(){
         }
     }
 
-
+    //On button click, load 10 Giphys at a time 
     for (var i=0;i<10;i++){
                
         $.ajax({
@@ -267,25 +265,35 @@ $(document).on('click','.giphyImage',function(){
 $(document).on('mouseenter','.downloadButton',function(){
     $(this).text('    Download');
     $(this).next('.fa-star').css('margin-left','74.5px');
+    $(this).next('.fa-trash-alt').css('margin-left','74.5px');
 })
 $(document).on('mouseleave','.downloadButton',function(){
     $(this).text('');
     $('.fa-star').css('margin-left','148px')
+    $('.fa-trash-alt').css('margin-left','148px');
 })
 
 //Save giphy to favorites array and savedGiphys local storage, when star/favorite button it clicked
-$(document).on('click','.favoriteButton', function(){
+$(document).on('click','.fa-star', function(){
     $(this).addClass('fa-trash-alt').removeClass('fa-star');
     newFavorite = $(this).attr('data-id');
-    // favorites = JSON.parse(localStorage.getItem('savedGiphys'));
     if(JSON.parse(localStorage.getItem('savedGiphys')) !== null){
         favorites = JSON.parse(localStorage.getItem('savedGiphys'));
         favorites.push(newFavorite);
     }
     else{
         favorites[0] = newFavorite;
-    }
-    
+    }    
     localStorage.setItem('savedGiphys',JSON.stringify(favorites));
+})
 
+//When clicking on the trash can icon, remove giphy from the favorites/saved list
+$(document).on('click','.fa-trash-alt', function(){
+    $(this).addClass('fa-star').removeClass('fa-trash-alt');
+    favorites = JSON.parse(localStorage.getItem('savedGiphys'));
+    var found = favorites.indexOf($(this).attr('data-id'));
+    if(found !== -1){
+        favorites.splice(found,1);
+    }
+    localStorage.setItem('savedGiphys',JSON.stringify(favorites));
 })
